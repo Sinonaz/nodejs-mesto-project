@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Mesto project: backend, API framework",
   "main": "dist/app.js",
+  "type": "module",
   "scripts": {
     "lint": "npx eslint src/**/*.ts",
     "build": "tsc",
@@ -25,6 +26,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^4.18.1",
     "mongoose": "^6.5.0"
   }
