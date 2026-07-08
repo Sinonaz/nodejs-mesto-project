@@ -1,3 +1,4 @@
+/// <reference path="./types/express.d.ts" />
 import 'dotenv/config';
 import { log, error } from 'node:console';
 import express, { Request, Response, NextFunction } from 'express';
