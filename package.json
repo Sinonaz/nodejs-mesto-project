@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Mesto project: backend, API framework",
   "main": "dist/app.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "lint": "npx eslint src/**/*.ts",
     "build": "tsc",

@@ -37,6 +37,15 @@
                 "js": "never",
                 "ts": "never"
             }
-        ]
+        ],
+        "no-underscore-dangle": "off"
     },
+    "overrides": [
+      {
+        "files": ["**/*.d.ts"],
+        "rules": {
+          "no-unused-vars": "off"
+        }
+      }
+    ]
 }

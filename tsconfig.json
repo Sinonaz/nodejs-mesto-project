@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "target": "ESNext",
+    "target": "ES6",
     /* Modules */
-    "module": "NodeNext",                                /* Specify what module code is generated. */
+    "module": "CommonJS",                                /* Specify what module code is generated. */
     "baseUrl": "./src",
     "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     /* JavaScript Support */
@@ -18,8 +18,12 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.d.ts",
   ],
+  "ts-node": {
+    "files": true
+  },
   "exclude": [
     "node_modules"
   ],
