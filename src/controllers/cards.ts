@@ -24,12 +24,44 @@ export async function deleteCardById(req: Request, res: Response) {
 }
 
 export async function createCard(req: Request, res: Response) {
-  const { name, link, user } = req.body;
+  const { name, link } = req.body;
 
   try {
-    const card = await Card.create({ name, link, owner: user._id });
+    const card = await Card.create({ name, link, owner: req.user._id });
 
     return res.status(201).send(card);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+}
+
+export async function addLike(req: Request, res: Response) {
+  const { cardId } = req.params;
+
+  try {
+    const card = await Card.findByIdAndUpdate(
+      cardId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    );
+
+    return res.status(200).send(card);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+}
+
+export async function removeLike(req: Request, res: Response) {
+  const { cardId } = req.params;
+
+  try {
+    const card = await Card.findByIdAndUpdate(
+      cardId,
+      { $pull: { likes: req.user._id } },
+      { new: true },
+    );
+
+    return res.status(200).send(card);
   } catch (err) {
     return res.status(500).send(err);
   }
