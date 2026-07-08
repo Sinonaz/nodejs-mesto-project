@@ -2,8 +2,10 @@ import 'dotenv/config';
 import { log, error } from 'node:console';
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import { errors } from 'celebrate';
 import usersRouter from './routes/users';
 import cardsRouter from './routes/cards';
+import errorMiddleware from './middlewares/error';
 
 const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
@@ -22,6 +24,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
+
+app.use(errors());
+app.use(errorMiddleware);
 
 mongoose.connect(dbUrl)
   .then(() => log('Connected to MongoDB'))
