@@ -1,18 +1,31 @@
 import 'dotenv/config';
-import express from 'express';
-import mongoose from 'mongoose';
 import { log, error } from 'node:console';
+import express, { Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
+import usersRouter from './routes/users';
+import cardsRouter from './routes/cards';
 
 const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
-try {
-  await mongoose.connect(dbUrl);
-  log('Connected to MongoDB');
-} catch (err) {
-  error('Failed to connect to MongoDB', err);
-}
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  req.user = {
+    _id: '6a4b9de94164dd9282813247',
+  };
+
+  next();
+});
+
+app.use('/users', usersRouter);
+app.use('/cards', cardsRouter);
+
+mongoose.connect(dbUrl)
+  .then(() => log('Connected to MongoDB'))
+  .catch((err) => error('Failed to connect to MongoDB', err));
 
 app.listen(PORT, () => {
   log(`Server is running on port ${PORT}`);
