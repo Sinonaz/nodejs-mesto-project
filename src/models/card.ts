@@ -17,7 +17,7 @@ const cardSchema = new Schema({
   },
   link: {
     type: String,
-    require: true,
+    required: true,
   },
   owner: {
     type: Schema.Types.ObjectId,
@@ -28,7 +28,6 @@ const cardSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'user',
-      default: [],
     },
   ],
   createdAt: {

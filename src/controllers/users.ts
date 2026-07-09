@@ -45,13 +45,20 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
   const { name, about } = req.body;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, { name, about }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { name, about },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
     if (!updatedUser) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found for update');
     }
 
-    return res.status(StatusCodes.UPDATED).send(updatedUser);
+    return res.status(StatusCodes.OK).send(updatedUser);
   } catch (err) {
     return next(err);
   }
@@ -61,13 +68,20 @@ export async function updateUserAvatar(req: Request, res: Response, next: NextFu
   const { avatar } = req.body;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, { avatar }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { avatar },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
     if (!updatedUser) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found for avatar update');
     }
 
-    return res.status(StatusCodes.UPDATED).send(updatedUser);
+    return res.status(StatusCodes.OK).send(updatedUser);
   } catch (err) {
     return next(err);
   }

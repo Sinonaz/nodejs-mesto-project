@@ -55,7 +55,7 @@ export async function addLike(req: Request, res: Response, next: NextFunction) {
       throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for like addition');
     }
 
-    return res.status(StatusCodes.UPDATED).send(card);
+    return res.status(StatusCodes.OK).send(card);
   } catch (err) {
     return next(err);
   }
@@ -75,7 +75,7 @@ export async function removeLike(req: Request, res: Response, next: NextFunction
       throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for like removal');
     }
 
-    return res.status(StatusCodes.UPDATED).send(card);
+    return res.status(StatusCodes.OK).send(card);
   } catch (err) {
     return next(err);
   }

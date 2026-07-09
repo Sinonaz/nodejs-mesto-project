@@ -7,22 +7,22 @@ import {
 const router = Router();
 
 router.get('/', getUsers);
-router.get('/:id', celebrate({
+router.get('/:userId', celebrate({
   params: {
-    id: Joi.string().alphanum().length(24).required(),
+    userId: Joi.string().alphanum().length(24).required(),
   },
 }), getUserById);
 router.post('/', celebrate({
   body: {
-    name: Joi.string().required(),
-    about: Joi.string().required(),
+    name: Joi.string().min(2).max(30).required(),
+    about: Joi.string().min(2).max(200).required(),
     avatar: Joi.string().required(),
   },
 }), createUser);
 router.patch('/me', celebrate({
   body: {
-    name: Joi.string(),
-    about: Joi.string(),
+    name: Joi.string().min(2).max(30).required(),
+    about: Joi.string().min(2).max(200).required(),
   },
 }), updateUser);
 router.patch('/me/avatar', celebrate({

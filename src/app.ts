@@ -7,6 +7,7 @@ import { errors } from 'celebrate';
 import usersRouter from './routes/users';
 import cardsRouter from './routes/cards';
 import errorMiddleware from './middlewares/error';
+import notFoundHandler from './middlewares/notFound';
 
 const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
@@ -26,13 +27,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 
+app.use(notFoundHandler);
+
 app.use(errors());
 app.use(errorMiddleware);
 
 mongoose.connect(dbUrl)
-  .then(() => log('Connected to MongoDB'))
-  .catch((err) => error('Failed to connect to MongoDB', err));
-
-app.listen(PORT, () => {
-  log(`Server is running on port ${PORT}`);
-});
+  .then(() => {
+    app.listen(PORT, () => {
+      log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => error('Failed to connect to MongoDB, server not started', err));
