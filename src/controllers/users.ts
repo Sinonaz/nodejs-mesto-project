@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { mongo } from 'mongoose';
+import { mongo, Error as MongooseError } from 'mongoose';
 import AppError from '../errors/appError';
 import User from '../models/user';
 import StatusCodes from '../enums/statusCodes';
@@ -61,6 +61,10 @@ export async function createUser(req: Request, res: Response, next: NextFunction
 
     return res.status(StatusCodes.CREATED).send(userData);
   } catch (err) {
+    if (err instanceof MongooseError.ValidationError) {
+      return next(new AppError(StatusCodes.BAD_REQUEST, err.message));
+    }
+
     if (err instanceof mongo.MongoServerError && err.code === 11000) {
       return next(new AppError(StatusCodes.CONFLICT, 'A user with this email already exists'));
     }
@@ -111,6 +115,10 @@ export async function updateUserAvatar(req: Request, res: Response, next: NextFu
 
     return res.status(StatusCodes.OK).send(updatedUser);
   } catch (err) {
+    if (err instanceof MongooseError.ValidationError) {
+      return next(new AppError(StatusCodes.BAD_REQUEST, err.message));
+    }
+
     return next(err);
   }
 }
