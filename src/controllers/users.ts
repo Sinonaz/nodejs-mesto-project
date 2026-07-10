@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { mongo } from 'mongoose';
 import AppError from '../errors/appError';
 import User from '../models/user';
 import StatusCodes from '../enums/statusCodes';
@@ -60,6 +61,10 @@ export async function createUser(req: Request, res: Response, next: NextFunction
 
     return res.status(StatusCodes.CREATED).send(userData);
   } catch (err) {
+    if (err instanceof mongo.MongoServerError && err.code === 11000) {
+      return next(new AppError(StatusCodes.CONFLICT, 'A user with this email already exists'));
+    }
+
     return next(err);
   }
 }
