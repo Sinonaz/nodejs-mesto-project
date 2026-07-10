@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { log, error } from 'node:console';
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
 import usersRouter from './routes/users';
@@ -18,6 +19,7 @@ const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
