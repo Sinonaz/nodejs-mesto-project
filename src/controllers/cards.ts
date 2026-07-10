@@ -23,6 +23,10 @@ export async function deleteCardById(req: Request, res: Response, next: NextFunc
       throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for deletion');
     }
 
+    if (card.owner.toString() !== req.user._id.toString()) {
+      throw new AppError(StatusCodes.FORBIDDEN, 'You are not allowed to delete this card');
+    }
+
     return res.status(StatusCodes.OK).send(card);
   } catch (err) {
     return next(err);
