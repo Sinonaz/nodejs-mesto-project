@@ -12,6 +12,7 @@ import notFoundHandler from './middlewares/notFound';
 import authMiddleware from './middlewares/auth';
 import authRouter from './routes/auth';
 import User from './models/user';
+import { requestLogger, errorLogger } from './middlewares/logger';
 
 const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
@@ -21,9 +22,13 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(requestLogger);
+
 app.use(authRouter);
 app.use('/users', authMiddleware, usersRouter);
 app.use('/cards', authMiddleware, cardsRouter);
+
+app.use(errorLogger);
 
 app.use(notFoundHandler);
 
