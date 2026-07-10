@@ -17,10 +17,10 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
 }
 
 export async function getUserById(req: Request, res: Response, next: NextFunction) {
-  const { id } = req.params;
+  const { userId } = req.params;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
 
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
@@ -56,8 +56,9 @@ export async function createUser(req: Request, res: Response, next: NextFunction
     const user = await User.create({
       name, about, avatar, email, password: hashedPassword,
     });
+    const { password: _, ...userData } = user.toObject();
 
-    return res.status(StatusCodes.CREATED).send(user);
+    return res.status(StatusCodes.CREATED).send(userData);
   } catch (err) {
     return next(err);
   }
@@ -114,21 +115,17 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
   try {
     const user = await User.findByCredentials(email, password);
-
-    if (!user) {
-      throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
-    }
-
     const token = jwt.sign(
       { _id: user._id },
       process.env.JWT_SECRET ?? 'secret-key',
       { expiresIn: '7d' },
     );
+    const { password: _, ...userData } = user.toObject();
 
     return res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    }).status(StatusCodes.OK).send(user);
+    }).status(StatusCodes.OK).send(userData);
   } catch (err) {
     return next(err);
   }

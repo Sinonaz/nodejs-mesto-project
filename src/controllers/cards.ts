@@ -14,16 +14,21 @@ export async function getCards(req: Request, res: Response, next: NextFunction) 
 }
 
 export async function deleteCardById(req: Request, res: Response, next: NextFunction) {
-  const { cardId } = req.params;
-
   try {
-    const card = await Card.findByIdAndDelete(cardId);
+    const { cardId } = req.params;
+
+    const card = await Card.findOneAndDelete({
+      _id: cardId,
+      owner: req.user._id,
+    });
 
     if (!card) {
-      throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for deletion');
-    }
+      const cardExists = await Card.findById(cardId);
 
-    if (card.owner.toString() !== req.user._id.toString()) {
+      if (!cardExists) {
+        throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for deletion');
+      }
+
       throw new AppError(StatusCodes.FORBIDDEN, 'You are not allowed to delete this card');
     }
 

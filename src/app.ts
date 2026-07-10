@@ -11,6 +11,7 @@ import errorMiddleware from './middlewares/error';
 import notFoundHandler from './middlewares/notFound';
 import authMiddleware from './middlewares/auth';
 import authRouter from './routes/auth';
+import User from './models/user';
 
 const dbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/mestodb';
 const PORT = process.env.PORT ?? 3000;
@@ -30,7 +31,9 @@ app.use(errors());
 app.use(errorMiddleware);
 
 mongoose.connect(dbUrl)
-  .then(() => {
+  .then(async () => {
+    await User.syncIndexes();
+
     app.listen(PORT, () => {
       log(`Server is running on port ${PORT}`);
     });

@@ -7,12 +7,12 @@ import {
 const router = Router();
 
 router.get('/', getUsers);
+router.get('/me', getCurrentUser);
 router.get('/:userId', celebrate({
   params: {
     userId: Joi.string().alphanum().length(24).required(),
   },
 }), getUserById);
-router.get('/me', getCurrentUser);
 router.patch('/me', celebrate({
   body: {
     name: Joi.string().min(2).max(30).required(),
