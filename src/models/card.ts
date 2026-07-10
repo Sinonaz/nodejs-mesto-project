@@ -18,6 +18,11 @@ const cardSchema = new Schema({
   link: {
     type: String,
     required: true,
+    validate: {
+      // I created this regex with AI
+      validator: (v: string) => /^https?:\/\/(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]*(\.[a-zA-Z0-9][-a-zA-Z0-9]*)*\.[a-zA-Z]{2,}(\/[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]*)?$/.test(v),
+      message: 'Invalid URL format',
+    },
   },
   owner: {
     type: Schema.Types.ObjectId,

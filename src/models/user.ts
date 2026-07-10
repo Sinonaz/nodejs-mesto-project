@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import {
   Document, Model, model, Schema,
 } from 'mongoose';
+import validator from 'validator';
 import StatusCodes from '../enums/statusCodes';
 import AppError from '../errors/appError';
 
@@ -43,10 +44,15 @@ const userSchema = new Schema<IUser, IUserModel>({
     type: String,
     required: true,
     unique: true,
+    validate: {
+      validator: (v: string) => validator.isEmail(v),
+      message: 'Invalid email format',
+    },
   },
   password: {
     type: String,
     required: true,
+    minlength: 6,
     select: false,
   },
 });
