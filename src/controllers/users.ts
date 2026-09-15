@@ -11,7 +11,7 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
   try {
     const users = await User.find();
 
-    return res.status(StatusCodes.OK).send(users);
+    return res.status(StatusCodes.OK).send({ data: users });
   } catch (err) {
     return next(err);
   }
@@ -27,7 +27,7 @@ export async function getUserById(req: Request, res: Response, next: NextFunctio
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
     }
 
-    return res.status(StatusCodes.OK).send(user);
+    return res.status(StatusCodes.OK).send({ data: user });
   } catch (err) {
     return next(err);
   }
@@ -41,7 +41,7 @@ export async function getCurrentUser(req: Request, res: Response, next: NextFunc
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
     }
 
-    return res.status(StatusCodes.OK).send(user);
+    return res.status(StatusCodes.OK).send({ data: user });
   } catch (err) {
     return next(err);
   }
@@ -90,7 +90,7 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found for update');
     }
 
-    return res.status(StatusCodes.OK).send(updatedUser);
+    return res.status(StatusCodes.OK).send({ data: updatedUser });
   } catch (err) {
     return next(err);
   }
@@ -113,7 +113,7 @@ export async function updateUserAvatar(req: Request, res: Response, next: NextFu
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found for avatar update');
     }
 
-    return res.status(StatusCodes.OK).send(updatedUser);
+    return res.status(StatusCodes.OK).send({ data: updatedUser });
   } catch (err) {
     if (err instanceof MongooseError.ValidationError) {
       return next(new AppError(StatusCodes.BAD_REQUEST, err.message));

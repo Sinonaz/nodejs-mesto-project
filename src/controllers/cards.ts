@@ -7,7 +7,7 @@ export async function getCards(req: Request, res: Response, next: NextFunction) 
   try {
     const cards = await Card.find();
 
-    return res.status(StatusCodes.OK).send(cards);
+    return res.status(StatusCodes.OK).send({ data: cards });
   } catch (err) {
     return next(err);
   }
@@ -32,7 +32,7 @@ export async function deleteCardById(req: Request, res: Response, next: NextFunc
       throw new AppError(StatusCodes.FORBIDDEN, 'You are not allowed to delete this card');
     }
 
-    return res.status(StatusCodes.OK).send(card);
+    return res.status(StatusCodes.OK).send({ data: card });
   } catch (err) {
     return next(err);
   }
@@ -44,7 +44,7 @@ export async function createCard(req: Request, res: Response, next: NextFunction
   try {
     const card = await Card.create({ name, link, owner: req.user._id });
 
-    return res.status(StatusCodes.CREATED).send(card);
+    return res.status(StatusCodes.CREATED).send({ data: card });
   } catch (err) {
     return next(err);
   }
@@ -64,7 +64,7 @@ export async function addLike(req: Request, res: Response, next: NextFunction) {
       throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for like addition');
     }
 
-    return res.status(StatusCodes.OK).send(card);
+    return res.status(StatusCodes.OK).send({ data: card });
   } catch (err) {
     return next(err);
   }
@@ -84,7 +84,7 @@ export async function removeLike(req: Request, res: Response, next: NextFunction
       throw new AppError(StatusCodes.NOT_FOUND, 'Card not found for like removal');
     }
 
-    return res.status(StatusCodes.OK).send(card);
+    return res.status(StatusCodes.OK).send({ data: card });
   } catch (err) {
     return next(err);
   }

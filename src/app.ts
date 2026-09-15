@@ -11,7 +11,6 @@ import cardsRouter from './routes/cards';
 import errorMiddleware from './middlewares/error';
 import notFoundHandler from './middlewares/notFound';
 import authMiddleware from './middlewares/auth';
-import successResponse from './middlewares/response';
 import authRouter from './routes/auth';
 import User from './models/user';
 import { requestLogger, errorLogger } from './middlewares/logger';
@@ -33,8 +32,8 @@ app.get('/crash-test', () => {
   }, 0);
 });
 app.use(authRouter);
-app.use('/users', authMiddleware, successResponse, usersRouter);
-app.use('/cards', authMiddleware, successResponse, cardsRouter);
+app.use('/users', authMiddleware, usersRouter);
+app.use('/cards', authMiddleware, cardsRouter);
 
 app.use(errorLogger);
 
