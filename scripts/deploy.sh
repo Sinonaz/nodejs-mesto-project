@@ -10,7 +10,7 @@ else
   exit 1
 fi
 
-nvm use
+nvm use --lts
 
 ln -sfn /home/sinonaz/nodejs-mesto-project/.env .env
 
