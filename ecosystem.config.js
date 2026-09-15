@@ -12,7 +12,7 @@ module.exports = {
   apps: [
     {
       name: 'api-service',
-      cwd: `${DEPLOY_PATH}/current`,
+      cwd: '/home/sinonaz/nodejs-mesto-project/current',
       script: './dist/app.js',
       env_production: {
         NODE_ENV: 'production',
@@ -34,7 +34,7 @@ module.exports = {
         'export NVM_DIR="$HOME/.nvm"',
         '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"',
         'nvm use',
-        `ln -sfn ${DEPLOY_PATH}/.env .env`,
+        'ln -sfn /home/sinonaz/nodejs-mesto-project/.env .env',
         'npm ci',
         'npm run build',
         'pm2 startOrReload ecosystem.config.js --env production --update-env',
